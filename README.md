@@ -20,6 +20,7 @@ PriceNudge is a peer-powered post-purchase price-monitoring platform. Shoppers u
 ## Documentation
 
 - [V1.3 Functional & Technical Specification](docs/requirements/functional-technical-spec-v1.3.md)
+- [Deferred features and V2+ roadmap](docs/roadmap.md)
 - [Documentation index](docs/README.md)
 
 The current specification includes the agreed use-case scope, workflows, business rules, data model, monitoring architecture, HTTP API outline, screens, acceptance criteria, and unresolved engineering decisions.
