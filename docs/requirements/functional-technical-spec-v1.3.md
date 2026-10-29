@@ -47,6 +47,18 @@
 
 **Version 2 deferrals:** UC-018, UC-021, UC-038, UC-045, UC-046, UC-049, UC-052–060, UC-063, UC-065–069. UC-071 is incorporated into UC-064 and UC-072 into UC-010.
 
+### Out of scope for V1 — deliberately deferred
+
+- **Broader price matching:** Cross-store, cross-location, online-to-in-store and other merchant-specific channel-pair comparisons.
+- **Complex receipt and purchase handling:** Unidentified products, unusual quantities, complicated discounts/promotions, partial returns and automated refund reconciliation.
+- **New observation sources and integrations:** Web price collection, shelf photographs, merchant price lists, manual unsupported prices, connected retailer accounts, and email/order imports.
+- **Advanced workflows:** Automatic adjustment-claim submission, formal incorrect-opportunity investigations, advanced fraud scoring, account suspension/reinstatement, and administrator-editable notification templates.
+- **Experience expansion:** Advanced alert thresholds and languages beyond English.
+
+**V1 safeguards remain:** basic receipt/duplicate validation; unambiguous unit pricing; customer-directed stop monitoring; private data/consent/deletion controls. Verified-policy findings may offer an editable claim draft; unknown-policy findings remain informational **without a claim draft**.
+
+**Detailed deferral rationale and dependencies:** [Deferred Features & Product Roadmap](../roadmap.md). All deferred use cases are **V2+ candidates, not scheduled commitments**.
+
 # 2. Actors, glossary and trust boundaries
 
 - **Guest visitor:** Uploads a receipt to temporary private storage; reviews/corrects extracted fields and sees a truthful preview without an account. Cannot save purchases, activate monitoring or contribute observations.
