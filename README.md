@@ -2,9 +2,11 @@
 
 **Prices drop. We'll let you know.**
 
-PriceNudge is a peer-powered post-purchase price-monitoring platform. Shoppers upload receipts, discover lower prices observed by other shoppers at the same store, and identify potential price-adjustment opportunities.
+> **Independent portfolio case study — concept and product design, not a live service.** PriceNudge is a hypothetical product concept developed to demonstrate product thinking, requirements definition, privacy-aware architecture, and engineering trade-offs. The documentation describes a proposed implementation, not a production deployment. Features, performance, retailer participation, and refund eligibility have not been validated or guaranteed.
 
-> **Status:** Version 1 functional/technical specification is a draft implementation baseline. PriceNudge is not yet a released service.
+PriceNudge is a proposed peer-powered post-purchase price-monitoring platform. Shoppers upload receipts, discover lower prices observed by other shoppers at the same store, and identify potential price-adjustment opportunities.
+
+> **Status:** Version 1 functional/technical specification is a draft design baseline for this portfolio case study. PriceNudge has not been implemented or released.
 
 ## Version 1 at a glance
 
