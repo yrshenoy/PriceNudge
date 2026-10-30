@@ -19,6 +19,22 @@ PriceNudge is a proposed peer-powered post-purchase price-monitoring platform. S
 - **Clear eligibility language:** Verified-policy opportunities may include an editable claim draft; unknown-policy alerts are **informational only**, without a claim draft or refund guarantee.
 - **Privacy by design:** Private source receipts, user-controlled sharing consent, temporary guest uploads, and administrator-executed deletion requests.
 
+## How PriceNudge works
+
+This conceptual workflow summarizes receipt-first onboarding and policy-aware alerts. Monitoring starts only after registration, email verification, and purchase confirmation. Peer observations are shared only with consent.
+
+```mermaid
+flowchart LR
+  Guest["Upload receipt as guest"] --> Preview["Review extraction and see preview"]
+  Preview --> Account["Verify account and confirm purchase"]
+  Account --> Monitor["Monitor eligible purchase window"]
+  Peer["Consented peer price observations"] --> Match["Exact-match eligibility checks"]
+  Monitor --> Match
+  Match --> Policy{"Merchant policy verified?"}
+  Policy -->|Yes| Draft["Potential opportunity and editable claim draft"]
+  Policy -->|No| Info["Informational price alert only"]
+```
+
 ## Documentation
 
 - [V1.3 Functional & Technical Specification](docs/requirements/functional-technical-spec-v1.3.md)
