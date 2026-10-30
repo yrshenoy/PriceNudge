@@ -6,6 +6,15 @@ This folder contains the product and engineering documentation for **PriceNudge*
 
 - [Functional & Technical Specification — V1.3](requirements/functional-technical-spec-v1.3.md): product rules, V1/V2 scope, receipt-first onboarding, workflow details, data model, monitoring architecture, proposed API, screens, acceptance criteria, and open decisions.
 
+## Visual workflows
+
+The specification includes Mermaid diagrams at the relevant requirements sections. Editable source files are also available:
+
+- [Receipt-first guest onboarding](diagrams/01-receipt-first-onboarding.mmd)
+- [Price matching and policy-aware alerts](diagrams/02-price-matching-and-alerts.mmd)
+- [Monitoring event lifecycle](diagrams/03-monitoring-event-lifecycle.mmd)
+- [Privacy and consent boundaries](diagrams/04-privacy-and-consent-boundaries.mmd)
+
 ## Deferred features and future roadmap
 
 - [Deferred Features & Product Roadmap](roadmap.md): all 21 deferred use cases, reasons for deferral, V1 limitations, potential V2 dependencies, and cross-location/channel expansion. V2 is a candidate scope, **not a committed release date**.
