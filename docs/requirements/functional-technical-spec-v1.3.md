@@ -291,6 +291,27 @@ Known-policy windows are evaluated using the merchant policy effective at the re
 
 ## BR-05 Data and consent boundaries
 
+**Workflow visualization:** [Editable Mermaid source](../diagrams/04-privacy-and-consent-boundaries.mmd). The diagram summarizes the approved V1 rules; the written requirements and acceptance criteria remain authoritative.
+
+```mermaid
+flowchart TB
+  Guest["Guest receipt upload"] --> Temp["Private temporary guest storage"]
+  Temp --> Preview["Private extracted preview"]
+  Preview --> Convert["Verified account conversion"]
+  Convert --> Purchase["Tenant-private receipt and purchase record"]
+  Purchase --> Choice{"Explicit sharing consent?"}
+  Choice -->|No| Private["Private monitoring only"]
+  Choice -->|Yes| Min["Minimal validated observation fields"]
+  Min --> Shared["Pseudonymized peer observation store"]
+  Shared --> Match["Restricted price-matching service"]
+  Match --> Alerts["Recipient-specific opportunity and alert"]
+  Purchase --> Withdraw["Withdrawal or deletion workflow"]
+  Shared --> Withdraw
+  Withdraw --> Cleanup["Revoke observations and re-evaluate derived results"]
+  Temp --> Expire["Abandoned guest data auto-expires"]
+```
+
+
 - **Guest drafts:** Keep uploads and extractions private, temporary, and excluded from shared observations.
 - **Customer purchases:** Preserve access control for original receipts and complete purchase records.
 - **Peer observations:** Include only fields needed for comparison (merchant, location, product/unit, price, currency, transaction date, anonymous provenance, eligibility and quality flags).
@@ -369,6 +390,31 @@ Use a **modular monolith API** plus isolated asynchronous workers, a single rela
 - Email adapter; metrics, error reporting and audit logs
 
 ## 6.2 Event lifecycle
+
+**Workflow visualization:** [Editable Mermaid source](../diagrams/03-monitoring-event-lifecycle.mmd). The diagram summarizes the approved V1 rules; the written requirements and acceptance criteria remain authoritative.
+
+```mermaid
+flowchart TD
+  A["Receipt confirmed by customer"] --> B["Save purchase and purchased items"]
+  B --> C{"Peer-sharing consent valid?"}
+  C -->|Yes| D["Create minimal peer observation"]
+  C -->|No| E["Keep private purchase only"]
+  D --> F["Persist transactional outbox event"]
+  B --> G["Activate monitoring and historical backfill"]
+  F --> H["Outbox dispatcher"]
+  H --> I["Matching worker"]
+  I --> J["Apply comparability, date, policy and privacy gates"]
+  G --> J
+  J --> K{"New or stronger opportunity?"}
+  K -->|No| L["Keep existing monitoring state"]
+  K -->|Yes| M["Idempotent opportunity upsert"]
+  M --> N["Notification event and dashboard update"]
+  N --> O["Email notification when enabled"]
+  P["Nightly reconciliation and deadline evaluation"] --> J
+  Q["Consent withdrawal or deletion request"] --> R["Invalidate affected observations"]
+  R --> J
+```
+
 
 - `guest_receipt.uploaded` → isolated extraction job → private preview. On verified account conversion, secure transfer to customer receipt staging and user confirmation. Authenticated direct uploads remain supported.
 - Confirmation transaction commits `purchase.confirmed`, purchased items, and consent-permitted observations (or queues their creation) along with `outbox_events`.
