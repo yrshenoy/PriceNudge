@@ -1,0 +1,16 @@
+flowchart TD
+  A["Visitor opens PriceNudge"] --> B["Upload receipt in private guest session"]
+  B --> C["Extract product and merchant data"]
+  C --> D["Guest reviews and corrects extracted items"]
+  D --> E["Show truthful monitoring preview"]
+  E --> F{"Save purchases and monitor?"}
+  F -->|No| G["Temporary data expires and is deleted"]
+  F -->|Yes| H["Register or sign in"]
+  H --> I{"Email verified?"}
+  I -->|No| J["Monitoring not activated"]
+  I -->|Yes| K["Securely convert guest session"]
+  K --> L["Customer confirms documented purchase"]
+  L --> M["Offer optional peer-sharing consent"]
+  M --> N["Activate eligible monitoring using original purchase date"]
+  N --> O["Check historical qualifying observations"]
+  N --> P["Monitor future observations"]
