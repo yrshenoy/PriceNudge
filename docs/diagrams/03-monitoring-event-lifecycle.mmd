@@ -1,0 +1,19 @@
+flowchart TD
+  A["Receipt confirmed by customer"] --> B["Save purchase and purchased items"]
+  B --> C{"Peer-sharing consent valid?"}
+  C -->|Yes| D["Create minimal peer observation"]
+  C -->|No| E["Keep private purchase only"]
+  D --> F["Persist transactional outbox event"]
+  B --> G["Activate monitoring and historical backfill"]
+  F --> H["Outbox dispatcher"]
+  H --> I["Matching worker"]
+  I --> J["Apply comparability, date, policy and privacy gates"]
+  G --> J
+  J --> K{"New or stronger opportunity?"}
+  K -->|No| L["Keep existing monitoring state"]
+  K -->|Yes| M["Idempotent opportunity upsert"]
+  M --> N["Notification event and dashboard update"]
+  N --> O["Email notification when enabled"]
+  P["Nightly reconciliation and deadline evaluation"] --> J
+  Q["Consent withdrawal or deletion request"] --> R["Invalidate affected observations"]
+  R --> J
