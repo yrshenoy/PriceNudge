@@ -59,6 +59,59 @@
 
 **Detailed deferral rationale and dependencies:** [Deferred Features & Product Roadmap](../roadmap.md). All deferred use cases are **V2+ candidates, not scheduled commitments**.
 
+## 1.1 High-level system overview (V1)
+
+This diagram summarizes the approved user journey and price-discovery flow. It is a **functional overview**, not a deployment diagram. Detailed data models, background-job behavior and API contracts appear later in this specification.
+
+```mermaid
+flowchart TD
+    A["Guest visits PriceNudge"] --> B["Upload receipt or completed purchase document"]
+    B --> C["Temporary private storage and extraction"]
+    C --> D["Review, correct and confirm store"]
+    D --> E["Preview supported purchases and real findings"]
+    E --> F["Register or log in; verify email"]
+    F --> G["Confirm and save documented purchase"]
+    G --> H["Purchase and items stored privately"]
+    G --> I{"Consent to share peer prices?"}
+    I -->|Yes| J["Publish eligible anonymized price observations"]
+    I -->|No| K["Private purchase only"]
+    H --> L["Calculate deadline: verified policy or provisional 30 days"]
+    L --> M{"Purchase still within window?"}
+    M -->|No| N["Expired: no active monitoring"]
+    M -->|Yes| O["Activate monitoring and backfill historical peer observations"]
+    J --> P["New peer observation event"]
+    P --> Q["Event-driven matching worker"]
+    O --> R["Same product, merchant, location, channel, unit and currency"]
+    Q --> R
+    S["Scheduled reconciliation and expiration checks"] --> R
+    R --> T{"Lower comparable peer transaction price within window?"}
+    T -->|No| U["Keep monitoring until deadline"]
+    T -->|Yes| V{"Merchant adjustment policy verified?"}
+    V -->|Yes| W["Potential opportunity and editable claim draft"]
+    V -->|No| X["Informational alert only; no claim draft"]
+    W --> Y["Customer notification and dashboard"]
+    X --> Y
+    N --> Z["Retain permitted purchase and price history"]
+
+    classDef guest fill:#e8f1ff,stroke:#477bb5,color:#152d4b
+    classDef outcome fill:#e9f7ee,stroke:#39865d,color:#183c28
+    classDef caution fill:#fff2dc,stroke:#b38a38,color:#4c3914
+    class A,B,C,D,E,F guest
+    class W,Y outcome
+    class X,N caution
+```
+
+**Interpretation and V1 boundaries**
+
+- A guest preview never creates an active monitor or contributes prices. Sharing requires a recorded customer consent choice after registration.
+- Monitoring and historical backfill use the **original transaction date**, not the upload date. Late uploads do not restart the eligibility window.
+- Candidate comparisons require the **same physical store or regional online storefront and purchase channel**, together with verified product identity, comparable unit basis and identical currency.
+- When the merchant policy is unknown, the purchase has a **provisional 30-day monitoring window from purchase**, and any alert is informational; **no editable claim draft** is generated.
+- The scheduled reconciler recovers missed processing events and expires monitors. A customer may also stop monitoring an individual item.
+- Historical peer prices do **not** prove current shelf/online availability or guarantee a refund. Monitoring expiration does not automatically delete permitted purchase history.
+
+---
+
 # 2. Actors, glossary and trust boundaries
 
 - **Guest visitor:** Uploads a receipt to temporary private storage; reviews/corrects extracted fields and sees a truthful preview without an account. Cannot save purchases, activate monitoring or contribute observations.
