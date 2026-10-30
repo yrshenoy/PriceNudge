@@ -1,0 +1,20 @@
+flowchart TD
+  A["New consent-permitted peer price observation"] --> B{"Valid and not withdrawn?"}
+  B -->|No| X["Exclude from peer matching"]
+  B -->|Yes| C{"Same verified product, pack, merchant, location, channel and currency?"}
+  C -->|No| Y["Not comparable"]
+  C -->|Yes| D{"Different customer and observation after original purchase?"}
+  D -->|No| Y
+  D -->|Yes| E{"Monitoring active and observation inside applicable window?"}
+  E -->|No| Z["No active opportunity"]
+  E -->|Yes| F{"Comparable unit price strictly lower?"}
+  F -->|No| Z
+  F -->|Yes| G{"Merchant policy verified?"}
+  G -->|No| H["Informational lower-price alert only"]
+  H --> H2["Refund eligibility unverified, no claim draft"]
+  G -->|Yes| I{"Verified policy conditions met?"}
+  I -->|No| J["Ineligible for adjustment alert"]
+  I -->|Yes| K["Potentially eligible opportunity"]
+  K --> L["Editable claim draft with caveats"]
+  H2 --> M["Deduplicate notifications and update dashboard"]
+  L --> M
