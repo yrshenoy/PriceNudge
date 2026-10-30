@@ -136,6 +136,28 @@ flowchart TD
 
 ## WF-01 Receipt-first guest onboarding and account conversion (UC-001–004, UC-073–075)
 
+**Workflow visualization:** [Editable Mermaid source](../diagrams/01-receipt-first-onboarding.mmd). This overview summarizes the agreed rules; the written requirements and acceptance criteria remain authoritative.
+
+```mermaid
+flowchart TD
+  A["Visitor opens PriceNudge"] --> B["Upload receipt in private guest session"]
+  B --> C["Extract product and merchant data"]
+  C --> D["Guest reviews and corrects extracted items"]
+  D --> E["Show truthful monitoring preview"]
+  E --> F{"Save purchases and monitor?"}
+  F -->|No| G["Temporary data expires and is deleted"]
+  F -->|Yes| H["Register or sign in"]
+  H --> I{"Email verified?"}
+  I -->|No| J["Monitoring not activated"]
+  I -->|Yes| K["Securely convert guest session"]
+  K --> L["Customer confirms documented purchase"]
+  L --> M["Offer optional peer-sharing consent"]
+  M --> N["Activate eligible monitoring using original purchase date"]
+  N --> O["Check historical qualifying observations"]
+  N --> P["Monitor future observations"]
+```
+
+
 **Preconditions**
 - Visitor is unauthenticated and may start without providing identity or granting device location/notification permissions.
 
@@ -197,6 +219,32 @@ flowchart TD
 - any guest evidence is securely expired if not converted.
 
 ## WF-03 Compare new price with existing purchases (UC-023–030)
+
+**Workflow visualization:** [Editable Mermaid source](../diagrams/02-price-matching-and-alerts.mmd). This overview summarizes the agreed rules; the written requirements and acceptance criteria remain authoritative.
+
+```mermaid
+flowchart TD
+  A["New consent-permitted peer price observation"] --> B{"Valid and not withdrawn?"}
+  B -->|No| X["Exclude from peer matching"]
+  B -->|Yes| C{"Same verified product, pack, merchant, location, channel and currency?"}
+  C -->|No| Y["Not comparable"]
+  C -->|Yes| D{"Different customer and observation after original purchase?"}
+  D -->|No| Y
+  D -->|Yes| E{"Monitoring active and observation inside applicable window?"}
+  E -->|No| Z["No active opportunity"]
+  E -->|Yes| F{"Comparable unit price strictly lower?"}
+  F -->|No| Z
+  F -->|Yes| G{"Merchant policy verified?"}
+  G -->|No| H["Informational lower-price alert only"]
+  H --> H2["Refund eligibility unverified, no claim draft"]
+  G -->|Yes| I{"Verified policy conditions met?"}
+  I -->|No| J["Ineligible for adjustment alert"]
+  I -->|Yes| K["Potentially eligible opportunity"]
+  K --> L["Editable claim draft with caveats"]
+  H2 --> M["Deduplicate notifications and update dashboard"]
+  L --> M
+```
+
 
 - A confirmed purchase line becomes a consent-eligible peer observation.
 - Publish `price_observation.created` via transactional outbox. Asynchronous worker retrieves candidate active monitoring items for identical product, merchant, location, channel and currency.
