@@ -1,0 +1,15 @@
+flowchart TB
+  Guest["Guest receipt upload"] --> Temp["Private temporary guest storage"]
+  Temp --> Preview["Private extracted preview"]
+  Preview --> Convert["Verified account conversion"]
+  Convert --> Purchase["Tenant-private receipt and purchase record"]
+  Purchase --> Choice{"Explicit sharing consent?"}
+  Choice -->|No| Private["Private monitoring only"]
+  Choice -->|Yes| Min["Minimal validated observation fields"]
+  Min --> Shared["Pseudonymized peer observation store"]
+  Shared --> Match["Restricted price-matching service"]
+  Match --> Alerts["Recipient-specific opportunity and alert"]
+  Purchase --> Withdraw["Withdrawal or deletion workflow"]
+  Shared --> Withdraw
+  Withdraw --> Cleanup["Revoke observations and re-evaluate derived results"]
+  Temp --> Expire["Abandoned guest data auto-expires"]
